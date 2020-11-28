@@ -36,7 +36,9 @@ def update_channel(guilds_json):
 
         try:
             update_channels_json(str(guild["id"]))
-        except Exception:
+        except Exception as e:
+            print("Failed updating channels json ", e)
+            print("Deleting channels.json")
             os.remove("/host/output/" + str(guild["id"]) + "/channels.json")
 
         subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml down --remove-orphans",
@@ -58,9 +60,15 @@ def update_channels_json(guild_id):
         dump_existing(guild_id, channels_json)
 
 
-def dump_existing(guild_id, channelss_json):
+def dump_existing(guild_id, channels_json):
     with open("/host/output/" + guild_id + "/channels.json", "w", encoding='utf8') as channels_output:
-        json.dump(channelss_json, channels_output)
+        json.dump(channels_json, channels_output)
+
+    for channel in channels_json["channels"]:
+        channel_path = "/host/output/" + guild_id + "/" + str(channel["id"])
+        if not os.path.isfile(channel_path):
+            print("Made dir " + channel_path + " as it didn't exist")
+            os.mkdir(channel_path)
 
 
 def update_existing(guild_id, channels_list, channels_list_duplicates, matches):
@@ -70,8 +78,8 @@ def update_existing(guild_id, channels_list, channels_list_duplicates, matches):
             try:
                 os.mkdir(folder_path)
                 print("Making a folder as it didn't exist:", folder_path)
-            except Exception:
-                pass
+            except Exception as e:
+                print("Failed making directory", e)
             channels_list.append({"name": match.group(2), "id": int(match.group(1))})
 
 

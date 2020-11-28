@@ -20,7 +20,8 @@ def cleanup():
 def process_data():
     try:
         update_guilds_json()
-    except Exception:
+    except Exception as e:
+        print("Failed updating guilds:", e)
         os.remove("/host/output/guilds.json")
 
 
@@ -57,7 +58,8 @@ def update_existing(guilds_list, guilds_list_duplicates, matches):
             try:
                 os.mkdir(folder_path)
                 print("Making a folder as it didn't exist:", folder_path)
-            except Exception:
+            except Exception as e:
+                print("Failed making a folder:", e)
                 pass
             guilds_list.append({"name": match.group(2), "id": int(match.group(1))})
 
