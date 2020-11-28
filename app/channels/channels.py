@@ -31,11 +31,16 @@ def update_channel(guilds_json):
             docker_compose.write(original_docker_compose.replace("<GUILD_ID>", str(guild["id"])))
 
         with open("/host/tmp/channels.log", "a", encoding='utf8') as output:
-            subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml up", shell=True, stdout=output)
+            subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml up", shell=True,
+                            stdout=output)
 
-        update_channels_json(str(guild["id"]))
+        try:
+            update_channels_json(str(guild["id"]))
+        except Exception:
+            os.remove("/host/output/" + str(guild["id"]) + "/channels.json")
 
-        subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml down --remove-orphans", shell=True)
+        subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml down --remove-orphans",
+                        shell=True)
         os.remove("/host/tmp/channels.log")
 
 

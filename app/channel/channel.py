@@ -1,5 +1,7 @@
 import subprocess
 import json
+import shutil
+import os
 
 original_docker_compose = """
 version: '3.4'
@@ -30,7 +32,11 @@ def update_guild_messages(guild_id):
     with open("/host/output/" + guild_id + "/channels.json", "r", encoding='utf8') as channels:
         channels_json = json.load(channels)
         for channel in channels_json["channels"]:
-            update_channel(guild_id, str(channel["id"]))
+            try:
+                update_channel(guild_id, str(channel["id"]))
+            except Exception:
+                folder_path = "/host/output/" + guild_id + "/" + str(channel["id"]) + "/"
+                shutil.rmtree(folder_path)
 
 
 def update_channel(guild_id, channel_id):
@@ -41,6 +47,10 @@ def update_channel(guild_id, channel_id):
 
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml up", shell=True)
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml down", shell=True)
+
+    for filename in os.listdir(folder_path):
+        if channel_id in filename:
+            os.rename(folder_path + filename, folder_path + "channel.json")
 
 
 if __name__ == '__main__':

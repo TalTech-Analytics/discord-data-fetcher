@@ -6,7 +6,7 @@ from guilds.guilds import update_guilds
 def fetch_output():
     update_guilds()
     update_channels()
-    # update_all_messages()
+    update_all_messages()
 
 
 if __name__ == '__main__':

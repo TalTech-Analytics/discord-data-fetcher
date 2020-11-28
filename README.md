@@ -18,11 +18,12 @@ And writes it to output. If given input has invalid structure then given file wi
 
 ## Running locally
 
-Run `docker-compose -f docker-compose-discord.yml up`
+- Create env file from .env with your token
+- Run `docker-compose -f docker-compose-discord.yml up`
 
 ## When developing
 
 - Comment out line 3 in `Dockerfile-discord`
 - Add all mounts from `docker-compose-discord.yml` to `docker-compose-build-discord.yml`
-- create .env file from ..env with your token
+- Create env file from .env with your token
 - Run `docker-compose -f docker-compose-build-discord.yml up --build`
