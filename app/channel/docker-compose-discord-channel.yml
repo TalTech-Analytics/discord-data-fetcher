@@ -1,5 +1,3 @@
-## Only for syntax highlighting
-
 version: '3.4'
 
 services:
@@ -7,11 +5,10 @@ services:
     chat_exporter:
         image: tyrrrz/discordchatexporter:stable
         restart: "no"
-        privileged: "true"
         env_file:
-            - /host/app/.env
+            - ../.env
         environment:
-            GUILDID: <GUILD_ID>
-        entrypoint: [ "dotnet", "/app/DiscordChatExporter.Cli.dll", "export", "--channel", "<CHANNEL_ID>", "-f", "Json" ]
+            GUILDID: 523436468908064768
+        entrypoint: [ "dotnet", "/app/DiscordChatExporter.Cli.dll", "export", "--channel", "523436571647803425", "--after", "2020-11-27", "-f", "Json" ]
         volumes:
-            - /host/output/<GUILD_ID>/<CHANNEL_ID>/:/app/out
+            - ./host/output/523436468908064768/523436571647803425/:/app/out
