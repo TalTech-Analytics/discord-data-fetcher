@@ -1,6 +1,6 @@
 FROM docker/compose:debian-1.27.4
 
-#ADD app /host/app
+ADD app /host/app
 WORKDIR /host/app
 
 RUN mkdir /host/tmp
