@@ -37,13 +37,26 @@ def update_channel(guilds_json):
         try:
             update_channels_json(str(guild["id"]))
         except Exception as e:
-            print("Failed updating channels json ", e)
-            print("Deleting channels.json")
-            os.remove("/host/output/" + str(guild["id"]) + "/channels.json")
+            clean_up(e, guild)
+            try_again(guild)
 
         subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml down --remove-orphans",
                         shell=True)
         os.remove("/host/tmp/channels.log")
+
+
+def try_again(guild):
+    try:
+        update_channels_json(str(guild["id"]))
+    except Exception as e:
+        print("Failed after trying for second time", e)
+        print("Skipping guild channels", guild["id"])
+
+
+def clean_up(e, guild):
+    print("Failed updating channels json ", e)
+    print("Deleting channels.json and trying again")
+    os.remove("/host/output/" + str(guild["id"]) + "/channels.json")
 
 
 def update_channels_json(guild_id):

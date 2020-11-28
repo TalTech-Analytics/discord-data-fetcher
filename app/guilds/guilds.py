@@ -21,8 +21,22 @@ def process_data():
     try:
         update_guilds_json()
     except Exception as e:
-        print("Failed updating guilds:", e)
-        os.remove("/host/output/guilds.json")
+        clean_up(e)
+        try_again()
+
+
+def try_again():
+    print("Trying again")
+    try:
+        update_guilds_json()
+    except Exception as e:
+        print("Failed second time:", e)
+        print("Skipping")
+
+
+def clean_up(e):
+    print("Failed updating guilds:", e)
+    os.remove("/host/output/guilds.json")
 
 
 def collect_data():

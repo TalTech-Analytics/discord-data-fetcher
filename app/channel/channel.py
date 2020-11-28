@@ -37,10 +37,24 @@ def update_guild_messages(guild_id):
             try:
                 update_channel(guild_id, str(channel["id"]))
             except Exception as e:
-                print("Failed updating guild messages:", e)
-                folder_path = "/host/output/" + guild_id + "/" + str(channel["id"]) + "/"
-                print("Deleting channel:", folder_path)
-                shutil.rmtree(folder_path)
+                clean_up(channel, e, guild_id)
+                try_again(channel, guild_id)
+
+
+def clean_up(channel, e, guild_id):
+    print("Failed updating guild:", guild_id, "channel:", str(channel["id"]), "time:", e)
+    folder_path = "/host/output/" + guild_id + "/" + str(channel["id"]) + "/"
+    print("Deleting channel:", folder_path)
+    shutil.rmtree(folder_path)
+
+
+def try_again(channel, guild_id):
+    print("Trying again")
+    try:
+        update_channel(guild_id, str(channel["id"]))
+    except Exception as e:
+        print("Failed updating guild:", guild_id, "channel:", str(channel["id"]), "second time:", e)
+        print("Skipping")
 
 
 def update_channel(guild_id, channel_id):
