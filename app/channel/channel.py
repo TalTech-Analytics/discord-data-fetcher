@@ -13,6 +13,7 @@ services:
     chat_exporter:
         image: tyrrrz/discordchatexporter:stable
         restart: "no"
+        privileged: "true"
         env_file:
             - /host/app/.env
         environment:
