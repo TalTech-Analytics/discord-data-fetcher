@@ -33,6 +33,7 @@ def update_all_messages():
 def update_guild_messages(guild_id):
     with open("/host/output/" + guild_id + "/channels.json", "r", encoding='utf8') as channels:
         channels_json = json.load(channels)
+        print("Updating channels:", [x["name"] for x in channels_json["channels"]])
         for channel in channels_json["channels"]:
             try:
                 update_channel(guild_id, str(channel["id"]))

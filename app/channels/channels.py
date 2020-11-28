@@ -92,7 +92,7 @@ def update_existing(guild_id, channels_list, channels_list_duplicates, matches):
                 os.mkdir(folder_path)
                 print("Making a folder as it didn't exist:", folder_path)
             except Exception as e:
-                print("Failed making directory", e)
+                pass
             channels_list.append({"name": match.group(2), "id": int(match.group(1))})
 
 
