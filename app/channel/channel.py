@@ -72,7 +72,10 @@ def update_channel(guild_id, channel_id):
         docker_compose.write(docker_compose_file)
 
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml up", shell=True)
-    subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml down", shell=True)
+    subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml down --remove-orphans",
+                    shell=True)
+
+    os.remove(folder_path + "docker-compose-discord-channel.yml")
 
     if os.path.isfile(folder_path + "channel.json"):
         print("Updating existing", folder_path)

@@ -26,4 +26,5 @@ And writes it to output. If given input has invalid structure then given file wi
 - Comment out line 3 in `Dockerfile-discord`
 - Add all mounts from `docker-compose-discord.yml` to `docker-compose-build-discord.yml`
 - Create env file from .env with your token
+- Move `docker-compose-build-discord.yml` file to `/analyzer/` folder
 - Run `docker-compose -f docker-compose-build-discord.yml up --build`
