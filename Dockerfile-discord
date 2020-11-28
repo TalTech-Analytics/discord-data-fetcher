@@ -12,7 +12,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt install python3
 
 # install dependencies
-RUN apt install python-pip -y
-RUN pip install python-dateutil
+RUN apt install python3-pip -y
+RUN pip3 install --upgrade python-dateutil
 
 ENTRYPOINT ["python3", "entrypoint.py"]
