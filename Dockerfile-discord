@@ -1,0 +1,12 @@
+FROM docker/compose:debian-1.27.4
+
+#ADD app /host/app
+WORKDIR /host/app
+
+RUN mkdir /host/tmp
+RUN apt update
+RUN apt install gpg-agent software-properties-common -y
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt install python3
+
+ENTRYPOINT ["python3", "entrypoint.py"]

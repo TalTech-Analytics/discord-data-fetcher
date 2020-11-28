@@ -1,0 +1,31 @@
+variables:
+    DOCKER_DRIVER: overlay
+
+stages:
+    - test
+    - build
+    - deploy
+
+build_discord_analyzer:
+    tags:
+        - dev
+        - master
+    image: docker:latest
+    stage: build
+    services:
+        -   name: docker:dind
+    before_script:
+        - docker container ls
+        - docker images
+    script:
+        - docker-compose -f docker-compose-build-discord.yml up --no-start --build --force-recreate --no-deps
+        - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        - docker tag $DOCKER_USER/discord $DOCKER_USER/discord-analyzer:latest
+        - docker push $DOCKER_USER/discord-analyzer:latest
+    after_script:
+        - docker-compose -f discord/docker-compose-build-discord.yml down --remove-orphans -v -f
+        - docker container ls
+        - docker images
+    only:
+        - dev
+        - master

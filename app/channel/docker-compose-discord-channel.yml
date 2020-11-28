@@ -1,0 +1,17 @@
+## Only for syntax highlighting
+
+version: '3.4'
+
+services:
+
+    chat_exporter:
+        image: tyrrrz/discordchatexporter:stable
+        restart: "no"
+        privileged: "true"
+        env_file:
+            - /host/app/.env
+        environment:
+            GUILDID: <GUILD_ID>
+        entrypoint: [ "dotnet", "/app/DiscordChatExporter.Cli.dll", "export", "--channel", "<CHANNEL_ID>", "-f", "Json" ]
+        volumes:
+            - /host/output/<GUILD_ID>/<CHANNEL_ID>/:/app/out
