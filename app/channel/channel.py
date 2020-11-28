@@ -73,12 +73,12 @@ def update_channel(guild_id, channel_id):
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml up", shell=True)
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml down", shell=True)
 
-    if os.path.isfile(folder_path + "channel.json"):
-        print("Updating existing", folder_path)
-        update_existing_messages(channel_id, folder_path)
-    else:
-        print("Creating new", folder_path)
-        create_new_messages(channel_id, folder_path)
+    # if os.path.isfile(folder_path + "channel.json"):
+    #     print("Updating existing", folder_path)
+    #     update_existing_messages(channel_id, folder_path)
+    # else:
+    #     print("Creating new", folder_path)
+    #     create_new_messages(channel_id, folder_path)
 
 
 def get_latest_timestamp(folder_path):
