@@ -5,8 +5,14 @@ WORKDIR /host/app
 
 RUN mkdir /host/tmp
 RUN apt update
+
+# install python
 RUN apt install gpg-agent software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt install python3
+
+# install dependencies
+RUN apt install python-pip -y
+RUN pip install python-dateutil
 
 ENTRYPOINT ["python3", "entrypoint.py"]
