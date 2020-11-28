@@ -24,4 +24,4 @@ RUN apt install python3
 RUN apt install python3-pip -y
 RUN pip3 install --upgrade python-dateutil
 
-ENTRYPOINT ["python3", "entrypoint.py"]
+ENTRYPOINT ["python3", "-u", "entrypoint.py"]

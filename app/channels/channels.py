@@ -1,7 +1,6 @@
 import subprocess
 import os
 import re
-import sys
 import json
 
 original_docker_compose = """
@@ -18,7 +17,7 @@ services:
 """
 
 log_pattern = r"^.*\s(\d*) \| (.*)$"
-sout = sys.stdout
+
 
 def update_channels():
     with open("/host/output/guilds.json", "r", encoding='utf-8') as guilds:
@@ -41,8 +40,8 @@ def update_channel(guilds_json):
             clean_up(e, guild)
             try_again(guild)
 
-        subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml down --remove-orphans", shell=True)
-        sys.stdout = sout
+        subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml down --remove-orphans",
+                        shell=True)
         os.remove("/host/tmp/channels.log")
 
 

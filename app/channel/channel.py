@@ -2,7 +2,6 @@ import subprocess
 import json
 import shutil
 import os
-import sys
 import dateutil.parser
 from datetime import timedelta
 
@@ -22,8 +21,6 @@ services:
         volumes:
             - /host/output/<GUILD_ID>/<CHANNEL_ID>/:/app/out/
 """
-
-sout = sys.stdout
 
 
 def update_all_messages():
@@ -75,7 +72,6 @@ def update_channel(guild_id, channel_id):
 
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml up", shell=True)
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml down", shell=True)
-    sys.stdout = sout
 
     if os.path.isfile(folder_path + "channel.json"):
         print("Updating existing", folder_path)
