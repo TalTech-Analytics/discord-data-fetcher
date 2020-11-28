@@ -79,6 +79,9 @@ def get_latest_timestamp(folder_path):
             after = ""
         else:
             after = (after.date() - timedelta(days=1)).isoformat()
+    else:
+        print("No channel.json. Getting all messages")
+        after = ""
     return after
 
 
