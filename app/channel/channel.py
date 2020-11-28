@@ -15,24 +15,24 @@ services:
         restart: "no"
         privileged: "true"
         env_file:
-            - /host/app/.env
+            - /analyzer/app/.env
         environment:
             GUILDID: <GUILD_ID>
         entrypoint: [ "dotnet", "/app/DiscordChatExporter.Cli.dll", "export", "--channel", "<CHANNEL_ID>", "--after", "<AFTER>", "-f", "Json" ]
         volumes:
-            - /host/output/<GUILD_ID>/<CHANNEL_ID>/:/app/out/
+            - /analyzer/discord-output/<GUILD_ID>/<CHANNEL_ID>/:/app/out/
 """
 
 
 def update_all_messages():
-    with open("/host/output/guilds.json", "r", encoding='utf-8') as guilds:
+    with open("/analyzer/discord-output/guilds.json", "r", encoding='utf-8') as guilds:
         guilds_json = json.load(guilds)
         for guild in guilds_json["guilds"]:
             update_guild_messages(str(guild['id']))
 
 
 def update_guild_messages(guild_id):
-    with open("/host/output/" + guild_id + "/channels.json", "r", encoding='utf-8') as channels:
+    with open("/analyzer/discord-output/" + guild_id + "/channels.json", "r", encoding='utf-8') as channels:
         channels_json = json.load(channels)
         print("Updating channels:", [x["name"] for x in channels_json["channels"]])
         for channel in channels_json["channels"]:
@@ -45,7 +45,7 @@ def update_guild_messages(guild_id):
 
 def clean_up(channel, e, guild_id):
     print("Failed updating guild:", guild_id, "channel:", str(channel["id"]), "time:", e)
-    folder_path = "/host/output/" + guild_id + "/" + str(channel["id"]) + "/"
+    folder_path = "/analyzer/discord-output/" + guild_id + "/" + str(channel["id"]) + "/"
     print("Deleting channel:", folder_path)
     shutil.rmtree(folder_path)
 
@@ -60,7 +60,7 @@ def try_again(channel, guild_id):
 
 
 def update_channel(guild_id, channel_id):
-    folder_path = "/host/output/" + guild_id + "/" + channel_id + "/"
+    folder_path = "/analyzer/discord-output/" + guild_id + "/" + channel_id + "/"
     after = get_latest_timestamp(folder_path)
     print("Fetching all messages after:", after)
     docker_compose_file = original_docker_compose \

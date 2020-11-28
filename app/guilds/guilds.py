@@ -13,7 +13,7 @@ def update_guilds():
 
 
 def cleanup():
-    os.remove("/host/tmp/guilds.log")
+    os.remove("/analyzer/tmp/guilds.log")
     subprocess.call("docker-compose -f guilds/docker-compose-discord-guilds.yml down --remove-orphans", shell=True)
 
 
@@ -36,16 +36,16 @@ def try_again():
 
 def clean_up(e):
     print("Failed updating guilds:", e)
-    os.remove("/host/output/guilds.json")
+    os.remove("/analyzer/discord-output/guilds.json")
 
 
 def collect_data():
-    with open("/host/tmp/guilds.log", "a", encoding='utf-8') as output:
+    with open("/analyzer/tmp/guilds.log", "a", encoding='utf-8') as output:
         subprocess.call("docker-compose -f guilds/docker-compose-discord-guilds.yml up", shell=True, stdout=output)
 
 
 def update_guilds_json():
-    with open("/host/tmp/guilds.log", "r", encoding='utf-8') as output:
+    with open("/analyzer/tmp/guilds.log", "r", encoding='utf-8') as output:
         content = "\n".join(output.readlines())
 
         matches = re.finditer(log_pattern, content, re.MULTILINE)
@@ -59,7 +59,7 @@ def update_guilds_json():
 
 
 def dump_existing(guilds_json):
-    with open("/host/output/guilds.json", "w", encoding='utf-8') as guilds_output:
+    with open("/analyzer/discord-output/guilds.json", "w", encoding='utf-8') as guilds_output:
         json.dump(guilds_json, guilds_output)
 
 
@@ -68,7 +68,7 @@ def update_existing(guilds_list, guilds_list_duplicates, matches):
         print("Match {matchNum} was found at {start}-{end}: {match}".format(matchNum=matchNum, start=match.start(),
                                                                             end=match.end(), match=match.group()))
         if match.group(2) not in guilds_list_duplicates:
-            folder_path = "/host/output/" + match.group(1)
+            folder_path = "/analyzer/discord-output/" + match.group(1)
             try:
                 os.mkdir(folder_path)
                 print("Making a folder as it didn't exist:", folder_path)
@@ -79,8 +79,8 @@ def update_existing(guilds_list, guilds_list_duplicates, matches):
 
 
 def fetch_existing(guilds_json, guilds_list, guilds_list_duplicates):
-    if os.path.isfile("/host/output/guilds.json"):
-        with open("/host/output/guilds.json", "r", encoding='utf-8') as guilds_existing:
+    if os.path.isfile("/analyzer/discord-output/guilds.json"):
+        with open("/analyzer/discord-output/guilds.json", "r", encoding='utf-8') as guilds_existing:
             guilds_json = json.load(guilds_existing)
             guilds_list = guilds_json["guilds"]
             for guild in guilds_list:

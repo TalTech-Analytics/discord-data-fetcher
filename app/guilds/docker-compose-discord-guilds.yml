@@ -6,5 +6,5 @@ services:
         image: tyrrrz/discordchatexporter:stable
         restart: "no"
         env_file:
-            - /host/app/.env
+            - /analyzer/app/.env
         entrypoint: [ "dotnet", "/app/DiscordChatExporter.Cli.dll", "guilds" ]

@@ -1,9 +1,9 @@
 FROM docker/compose:debian-1.27.4
 
-ADD app /host/app
-WORKDIR /host/app
+ADD app /analyzer/app
+WORKDIR /analyzer/app
 
-RUN mkdir /host/tmp
+RUN mkdir /analyzer/tmp
 RUN apt update
 
 # Set locale
