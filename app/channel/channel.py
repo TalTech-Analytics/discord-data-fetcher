@@ -24,14 +24,14 @@ services:
 
 
 def update_all_messages():
-    with open("/host/output/guilds.json", "r", encoding='utf8') as guilds:
+    with open("/host/output/guilds.json", "r", encoding='utf-8') as guilds:
         guilds_json = json.load(guilds)
         for guild in guilds_json["guilds"]:
             update_guild_messages(str(guild['id']))
 
 
 def update_guild_messages(guild_id):
-    with open("/host/output/" + guild_id + "/channels.json", "r", encoding='utf8') as channels:
+    with open("/host/output/" + guild_id + "/channels.json", "r", encoding='utf-8') as channels:
         channels_json = json.load(channels)
         print("Updating channels:", [x["name"] for x in channels_json["channels"]])
         for channel in channels_json["channels"]:
@@ -67,7 +67,7 @@ def update_channel(guild_id, channel_id):
         .replace("<CHANNEL_ID>", channel_id) \
         .replace("<AFTER>", after)
 
-    with open(folder_path + "docker-compose-discord-channel.yml", "w", encoding='utf8') as docker_compose:
+    with open(folder_path + "docker-compose-discord-channel.yml", "w", encoding='utf-8') as docker_compose:
         docker_compose.write(docker_compose_file)
 
     subprocess.call("docker-compose -f " + folder_path + "docker-compose-discord-channel.yml up", shell=True)
@@ -84,7 +84,7 @@ def update_channel(guild_id, channel_id):
 def get_latest_timestamp(folder_path):
     after = None
     if os.path.isfile(folder_path + "channel.json"):
-        with open(folder_path + "channel.json", "r", encoding='utf8') as channel_existing:
+        with open(folder_path + "channel.json", "r", encoding='utf-8') as channel_existing:
             channel_json = json.load(channel_existing)
             for message in channel_json["messages"]:
                 insertion_date = dateutil.parser.parse(message["timestamp"])
@@ -109,7 +109,7 @@ def create_new_messages(channel_id, folder_path):
 def update_existing_messages(channel_id, folder_path):
     existing_messages = set()
 
-    with open(folder_path + "channel.json", "r", encoding='utf8') as channel_existing:
+    with open(folder_path + "channel.json", "r", encoding='utf-8') as channel_existing:
         print("Reading channel.json")
         channel_json = json.load(channel_existing)
         for message in channel_json["messages"]:
@@ -119,7 +119,7 @@ def update_existing_messages(channel_id, folder_path):
         if channel_id in filename:
             print("Found new file", filename)
 
-            with open(folder_path + filename, "r", encoding='utf8') as append:
+            with open(folder_path + filename, "r", encoding='utf-8') as append:
                 print("Appending ", filename)
                 channel_append = json.load(append)
 
@@ -130,7 +130,7 @@ def update_existing_messages(channel_id, folder_path):
 
             os.remove(folder_path + filename)
 
-    with open(folder_path + "channel.json", "w", encoding='utf8') as update:
+    with open(folder_path + "channel.json", "w", encoding='utf-8') as update:
         print("Writing channel.json")
         json.dump(channel_json, update)
 

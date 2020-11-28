@@ -20,17 +20,17 @@ log_pattern = r"^.*\s(\d*) \| (.*)$"
 
 
 def update_channels():
-    with open("/host/output/guilds.json", "r", encoding='utf8') as guilds:
+    with open("/host/output/guilds.json", "r", encoding='utf-8') as guilds:
         guilds_json = json.load(guilds)
         update_channel(guilds_json)
 
 
 def update_channel(guilds_json):
     for guild in guilds_json["guilds"]:
-        with open("channels/docker-compose-discord-channels.yml", "w", encoding='utf8') as docker_compose:
+        with open("channels/docker-compose-discord-channels.yml", "w", encoding='utf-8') as docker_compose:
             docker_compose.write(original_docker_compose.replace("<GUILD_ID>", str(guild["id"])))
 
-        with open("/host/tmp/channels.log", "a", encoding='utf8') as output:
+        with open("/host/tmp/channels.log", "a", encoding='utf-8') as output:
             subprocess.call("docker-compose -f channels/docker-compose-discord-channels.yml up", shell=True,
                             stdout=output)
 
@@ -60,7 +60,7 @@ def clean_up(e, guild):
 
 
 def update_channels_json(guild_id):
-    with open("/host/tmp/channels.log", "r", encoding='utf8') as output:
+    with open("/host/tmp/channels.log", "r", encoding='utf-8') as output:
         content = "\n".join(output.readlines())
 
         matches = re.finditer(log_pattern, content, re.MULTILINE)
@@ -74,7 +74,7 @@ def update_channels_json(guild_id):
 
 
 def dump_existing(guild_id, channels_json):
-    with open("/host/output/" + guild_id + "/channels.json", "w", encoding='utf8') as channels_output:
+    with open("/host/output/" + guild_id + "/channels.json", "w", encoding='utf-8') as channels_output:
         json.dump(channels_json, channels_output)
 
     for channel in channels_json["channels"]:
@@ -99,7 +99,7 @@ def update_existing(guild_id, channels_list, channels_list_duplicates, matches):
 def fetch_existing(guild_id, channels_json, channels_list, channels_list_duplicates):
     channel_path = "/host/output/" + guild_id + "/channels.json"
     if os.path.isfile(channel_path):
-        with open(channel_path, "r", encoding='utf8') as channels_existing:
+        with open(channel_path, "r", encoding='utf-8') as channels_existing:
             channels_json = json.load(channels_existing)
             channels_list = channels_json["channels"]
             for channel in channels_list:

@@ -40,12 +40,12 @@ def clean_up(e):
 
 
 def collect_data():
-    with open("/host/tmp/guilds.log", "a", encoding='utf8') as output:
+    with open("/host/tmp/guilds.log", "a", encoding='utf-8') as output:
         subprocess.call("docker-compose -f guilds/docker-compose-discord-guilds.yml up", shell=True, stdout=output)
 
 
 def update_guilds_json():
-    with open("/host/tmp/guilds.log", "r", encoding='utf8') as output:
+    with open("/host/tmp/guilds.log", "r", encoding='utf-8') as output:
         content = "\n".join(output.readlines())
 
         matches = re.finditer(log_pattern, content, re.MULTILINE)
@@ -59,7 +59,7 @@ def update_guilds_json():
 
 
 def dump_existing(guilds_json):
-    with open("/host/output/guilds.json", "w", encoding='utf8') as guilds_output:
+    with open("/host/output/guilds.json", "w", encoding='utf-8') as guilds_output:
         json.dump(guilds_json, guilds_output)
 
 
@@ -80,7 +80,7 @@ def update_existing(guilds_list, guilds_list_duplicates, matches):
 
 def fetch_existing(guilds_json, guilds_list, guilds_list_duplicates):
     if os.path.isfile("/host/output/guilds.json"):
-        with open("/host/output/guilds.json", "r", encoding='utf8') as guilds_existing:
+        with open("/host/output/guilds.json", "r", encoding='utf-8') as guilds_existing:
             guilds_json = json.load(guilds_existing)
             guilds_list = guilds_json["guilds"]
             for guild in guilds_list:
