@@ -1,13 +1,16 @@
 import subprocess
 import os
 import re
+import sys
 import json
 
 log_pattern = r"^.*\s(\d*) \| (.*)$"
+sout = sys.stdout
 
 
 def update_guilds():
     collect_data()
+    sys.stdout = sout
     process_data()
     cleanup()
 
