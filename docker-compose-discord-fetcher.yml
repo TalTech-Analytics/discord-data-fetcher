@@ -4,7 +4,7 @@ version: '3.4'
 services:
 
     discord:
-        image: automatedtestingservice/discord-analyzer
+        image: envomp/discord-data-fetcher
         privileged: true # summons docker container for each channel
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock

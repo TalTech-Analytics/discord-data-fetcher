@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+
+    discord:
+        image: envomp/discord-data-fetcher
+        container_name: discord-data-fetcher
+        build:
+            context: .
+            dockerfile: Dockerfile-discord-fetcher
