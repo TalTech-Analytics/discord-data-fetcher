@@ -5,7 +5,6 @@ services:
 
     discord:
         image: envomp/discord-data-fetcher
-        privileged: true # summons docker container for each channel
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - /analyzer/discord-output/:/analyzer/discord-output/

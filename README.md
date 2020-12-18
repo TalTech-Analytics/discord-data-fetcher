@@ -1,6 +1,7 @@
 ## Discord
 
 Script which fetches all messages from all guilds visible when ran docker-compose-discord.yml
+Important: Do not change mount points, because it's hardcoded in in other docker-compose files
 
 ## Sample output
 
